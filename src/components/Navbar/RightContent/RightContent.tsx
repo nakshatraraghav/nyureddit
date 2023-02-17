@@ -11,7 +11,6 @@ type RightContentProps = {
 const RightContent: React.FC<RightContentProps> = ({ user }) => {
   return (
     <div>
-      {/* AuthModal */}
       <AuthModal />
       <div className="flex items-center justify-between md:space-x-4">
         {user ? (

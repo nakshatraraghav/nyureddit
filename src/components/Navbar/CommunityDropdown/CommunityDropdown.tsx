@@ -6,12 +6,15 @@ import { chevron } from "@/assets/icons";
 import { DropdownAnimations } from "@/animations/dropdown";
 
 import { BiHome } from "react-icons/bi";
-// import CreateCommunityModal from "../../Modal/CreateCommunity/CreateCommunityModal";
+
 import Communities from "./Communities";
+
+import CreateCommunity from "@/components/Modal/CreateCommunity/CreateCommunity";
 
 const CommunityDropdown: React.FC = () => {
   return (
     <Fragment>
+      <CreateCommunity />
       <div>
         <Menu
           as="div"
