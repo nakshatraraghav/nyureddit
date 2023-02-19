@@ -4,24 +4,18 @@ import {
   addDoc,
   collection,
   serverTimestamp,
-  setDoc,
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytes,
-  uploadString,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import formTabs from "./FormTabsData";
 import ImageUpload from "./ImageUpload";
+import Failure from "./PostStatus/Failure";
+import Success from "./PostStatus/Success";
 import TabItem from "./TabItem";
 import TextInputs from "./TextInputs";
-
-import { v4 } from "uuid";
 
 type CreateNewPostProps = {
   user: User;
@@ -35,7 +29,8 @@ const CreateNewPost: React.FC<CreateNewPostProps> = ({ user }) => {
   });
   const [selectedImage, setSelectedImage] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
   const router = useRouter();
 
   function onInputsChange(
@@ -91,10 +86,16 @@ const CreateNewPost: React.FC<CreateNewPostProps> = ({ user }) => {
           downloadURL: downloadURL,
         });
       }
+      setLoading(false);
+      setSuccess(true);
+      setTextInputs({
+        body: "",
+        title: "",
+      });
     } catch (error: any) {
       console.log(error.message);
+      setError(error.message);
     }
-    setLoading(false);
   }
 
   return (
@@ -129,6 +130,18 @@ const CreateNewPost: React.FC<CreateNewPostProps> = ({ user }) => {
           />
         )}
       </div>
+      <div
+        className="flex items-center justify-center mt-4"
+        onClick={() => {
+          router.back();
+          setSuccess(false);
+          setError("");
+        }}
+      >
+        <button className="button">Back to Community Page</button>
+      </div>
+      {error && <Failure />}
+      {success && <Success />}
     </div>
   );
 };
