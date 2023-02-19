@@ -1,13 +1,16 @@
 import CreateNewPost from "@/components/Post/CreatePost/CreateNewPost";
+import { auth } from "@/firebase/app";
 import PageLayout from "@/layouts/PageLayout";
 import { Fragment } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-const submit = () => {
+const Submit = () => {
+  const [user] = useAuthState(auth);
   return (
     <PageLayout>
       <Fragment>
         <div className="p-4 border-b-[1px] border-gray-400">
-          <CreateNewPost />
+          {user && <CreateNewPost user={user} />}
         </div>
       </Fragment>
       <Fragment>
@@ -17,4 +20,4 @@ const submit = () => {
   );
 };
 
-export default submit;
+export default Submit;
