@@ -140,8 +140,8 @@ const CreateNewPost: React.FC<CreateNewPostProps> = ({ user }) => {
       >
         <button className="button">Back to Community Page</button>
       </div>
-      {error && <Failure />}
-      {success && <Success />}
+      {error && <Failure removeAlert={setError} />}
+      {success && <Success removeAlert={setSuccess} />}
     </div>
   );
 };

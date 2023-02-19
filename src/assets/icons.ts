@@ -21,6 +21,10 @@ import { BsLink45Deg } from "react-icons/bs";
 import { BiPoll } from "react-icons/bi";
 import { IoDocumentText } from "react-icons/io5";
 
+import { RxCrossCircled } from "react-icons/rx";
+
+export const Remove = RxCrossCircled;
+
 export const CreatePostFormIcons = {
   post: IoDocumentText,
   image: IoImageOutline,
