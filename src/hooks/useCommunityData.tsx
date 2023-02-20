@@ -39,12 +39,10 @@ export default function useCommunityData() {
       const snippets = snapshot.docs.map((doc) => ({
         ...doc.data(),
       }));
-      console.log(snippets);
       setCommunityStateValue((prev) => ({
         ...prev,
         communitySnippets: snippets as CommunitySnippets[],
       }));
-      console.log(communityState);
     } catch (err: any) {
       setError(err.message);
     }
@@ -144,6 +142,5 @@ export default function useCommunityData() {
       setError(err.message);
     }
   }
-  console.log(communityStateValue);
   return { communityStateValue, joinOrLeaveCommunity, loading, error };
 }

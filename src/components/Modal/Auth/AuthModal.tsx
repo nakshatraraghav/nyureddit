@@ -12,7 +12,6 @@ import { auth } from "@/firebase/app";
 const AuthModal: React.FC = () => {
   const [modalState, setModalState] = useAtom(authModalState);
   const [user] = useAuthState(auth);
-  console.log(user);
 
   useEffect(() => {
     if (user) {

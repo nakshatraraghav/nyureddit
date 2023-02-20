@@ -12,6 +12,8 @@ import { Fragment } from "react";
 import Header from "@/components/Community/Header";
 import PageLayout from "@/layouts/PageLayout";
 
+import Posts from "@/components/Post/Posts/Posts";
+
 type CommunityPageProps = {
   communityData: Community;
 };
@@ -26,6 +28,7 @@ const CommunityPage: NextPage<CommunityPageProps> = ({ communityData }) => {
       <PageLayout>
         <Fragment>
           <CreatePostLink />
+          <Posts communtiy={communityData} />
         </Fragment>
         <Fragment>
           <div>Right Container</div>
