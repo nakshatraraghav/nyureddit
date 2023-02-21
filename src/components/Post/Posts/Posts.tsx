@@ -7,6 +7,7 @@ import usePosts from "@/hooks/usePosts";
 import { Post } from "@/atoms/posts";
 import PostItem from "./PostItem";
 import { useAuthState } from "react-firebase-hooks/auth";
+import PostSkeletonLoader from "./PostSkeletonLoader";
 
 type PostsProps = {
   communtiy: Community;
@@ -55,17 +56,26 @@ const Posts: React.FC<PostsProps> = ({ communtiy }) => {
 
   return (
     <div className="flex flex-col">
-      {postsStateValue.posts.map((post) => (
-        <PostItem
-          key={post.title}
-          post={post}
-          onDeletePost={onDeletePost}
-          onVote={onVote}
-          onSelectPost={onSelectPost}
-          userVoteValue={undefined}
-          userIsCreator={user?.uid === post.creatorId}
-        />
-      ))}
+      {!loading ? (
+        postsStateValue.posts.map((post) => (
+          <PostItem
+            key={post.title}
+            post={post}
+            onDeletePost={onDeletePost}
+            onVote={onVote}
+            onSelectPost={onSelectPost}
+            userVoteValue={undefined}
+            userIsCreator={user?.uid === post.creatorId}
+          />
+        ))
+      ) : (
+        <div>
+          <PostSkeletonLoader />
+          <PostSkeletonLoader />
+          <PostSkeletonLoader />
+          <PostSkeletonLoader />
+        </div>
+      )}
     </div>
   );
 };
