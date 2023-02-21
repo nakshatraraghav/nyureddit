@@ -9,6 +9,9 @@ import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import Spinner from "../Spinner/Spinner";
 import { doc, updateDoc } from "firebase/firestore";
 
+import { useAtom, useSetAtom } from "jotai";
+import { communityState } from "@/atoms/community";
+
 type UpdateCommunityImageProps = {
   community: Community;
 };
@@ -20,7 +23,7 @@ const UpdateCommunityImage: React.FC<UpdateCommunityImageProps> = ({
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-
+  const setCommunityState = useSetAtom(communityState);
   async function handleCommunityImageUpdate() {
     setLoading(true);
     try {
@@ -34,7 +37,10 @@ const UpdateCommunityImage: React.FC<UpdateCommunityImageProps> = ({
         imageUrl: downloadURL,
       });
 
-      alert("doc updated in firestore with the link");
+      setCommunityState((prev) => ({
+        ...prev,
+        imageUrl: downloadURL,
+      }));
 
       setSelectedImage("");
     } catch (error: any) {

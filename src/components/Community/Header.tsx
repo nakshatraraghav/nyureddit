@@ -25,9 +25,9 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
       <div className="h-1/2 bg-blue-400" />
       <div className="flex justify-center bg-white flex-grow">
         <div className="flex w-11/12 max-w-[860px] ">
-          {communityData.imageUrl ? (
+          {communityStateValue.currentCommunity?.imageUrl ? (
             <Image
-              src={communityData.imageUrl}
+              src={communityStateValue.currentCommunity.imageUrl}
               height={64}
               width={64}
               className="w-24 h-24 rounded-full relative -top-[14px] border-4 border-white"
