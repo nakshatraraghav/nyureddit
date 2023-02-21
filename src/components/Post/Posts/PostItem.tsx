@@ -1,10 +1,11 @@
 import { Post } from "@/atoms/posts";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 
 import { PostIcons } from "@/assets/icons";
 
 import moment from "moment";
 import Image from "next/image";
+import Spinner from "@/components/Spinner/Spinner";
 
 type PostItemProps = {
   post: Post;
@@ -24,7 +25,9 @@ const PostItem: React.FC<PostItemProps> = ({
   onSelectPost,
 }) => {
   const [error, setError] = useState<string>("");
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const handleDeletePost = async () => {
+    setDeleteLoading(true);
     try {
       console.log("delete button clicked");
       const success = await onDeletePost(post);
@@ -36,6 +39,7 @@ const PostItem: React.FC<PostItemProps> = ({
     } catch (error: any) {
       setError(error.message);
     }
+    setDeleteLoading(false);
   };
 
   return (
@@ -109,8 +113,17 @@ const PostItem: React.FC<PostItemProps> = ({
               className="flex items-center px-2 py-2 rounded hover:bg-gray-200 space-x-2 justify-between transition-all duration-300"
               onClick={handleDeletePost}
             >
-              <PostIcons.delete />
-              <div>Delete</div>
+              {deleteLoading ? (
+                <Fragment>
+                  <Spinner />
+                  <div>Deleting</div>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <PostIcons.delete />
+                  <div>Delete</div>
+                </Fragment>
+              )}
             </div>
           ) : null}
         </div>
