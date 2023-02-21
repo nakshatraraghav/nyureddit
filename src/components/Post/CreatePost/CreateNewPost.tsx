@@ -16,6 +16,7 @@ import Failure from "@/components/Alerts/Failure";
 import Success from "@/components/Alerts/Success";
 import TabItem from "./TabItem";
 import TextInputs from "./TextInputs";
+import useSelectImage from "@/hooks/useSelectImage";
 
 type CreateNewPostProps = {
   user: User;
@@ -27,7 +28,7 @@ const CreateNewPost: React.FC<CreateNewPostProps> = ({ user }) => {
     title: "",
     body: "",
   });
-  const [selectedImage, setSelectedImage] = useState<string>();
+  const { selectedImage, setSelectedImage, onSelectImage } = useSelectImage();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
@@ -40,18 +41,6 @@ const CreateNewPost: React.FC<CreateNewPostProps> = ({ user }) => {
       ...prev,
       [evt.target.name]: evt.target.value,
     }));
-  }
-
-  function onSelectImage(evt: React.ChangeEvent<HTMLInputElement>) {
-    const reader = new FileReader();
-    if (evt.target.files?.[0]) {
-      reader.readAsDataURL(evt.target.files[0]);
-    }
-    reader.onload = (readerEvent) => {
-      if (readerEvent.target?.result) {
-        setSelectedImage(readerEvent.target.result as string);
-      }
-    };
   }
 
   async function handlePostCreation() {
