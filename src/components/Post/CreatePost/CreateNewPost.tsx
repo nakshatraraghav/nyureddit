@@ -12,8 +12,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import formTabs from "./FormTabsData";
 import ImageUpload from "./ImageUpload";
-import Failure from "./PostStatus/Failure";
-import Success from "./PostStatus/Success";
+import Failure from "@/components/Alerts/Failure";
+import Success from "@/components/Alerts/Success";
 import TabItem from "./TabItem";
 import TextInputs from "./TextInputs";
 
@@ -135,8 +135,20 @@ const CreateNewPost: React.FC<CreateNewPostProps> = ({ user }) => {
       >
         <button className="button">Back to Community Page</button>
       </div>
-      {error && <Failure removeAlert={setError} />}
-      {success && <Success removeAlert={setSuccess} />}
+      {error && (
+        <Failure
+          title="Unable to Create the post"
+          body="Please check your internet connection and try again"
+          removeAlert={setError}
+        />
+      )}
+      {success && (
+        <Success
+          title="Post Created"
+          body="Post has been created in the database"
+          removeAlert={setSuccess}
+        />
+      )}
     </div>
   );
 };

@@ -6,6 +6,8 @@ import { PostIcons } from "@/assets/icons";
 import moment from "moment";
 import Image from "next/image";
 import Spinner from "@/components/Spinner/Spinner";
+import Failure from "@/components/Alerts/Failure";
+import Success from "@/components/Alerts/Success";
 
 type PostItemProps = {
   post: Post;
@@ -34,7 +36,6 @@ const PostItem: React.FC<PostItemProps> = ({
       if (!success) {
         throw Error("failed to delete this post");
       }
-
       console.log("post deletd");
     } catch (error: any) {
       setError(error.message);
