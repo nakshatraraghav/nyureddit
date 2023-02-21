@@ -6,7 +6,7 @@ export interface Community {
   creatorId: string;
   numberOfMembers: number;
   privacyType: "public" | "restricted" | "private";
-  createdAt?: Timestamp;
+  createdAt: Timestamp;
   imageUrl?: string;
 }
 
@@ -18,6 +18,7 @@ export interface CommunitySnippets {
 
 interface CommunityState {
   communitySnippets: CommunitySnippets[];
+  currentCommunity?: Community;
 }
 
 const defaultState: CommunityState = {

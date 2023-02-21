@@ -8,17 +8,29 @@ import NotFound from "@/components/Community/NotFound";
 import CreatePostLink from "@/components/Community/CreatePostLink";
 
 import safeJsonStringify from "safe-json-stringify";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import Header from "@/components/Community/Header";
 import PageLayout from "@/layouts/PageLayout";
 
 import Posts from "@/components/Post/Posts/Posts";
+
+import { useAtom, useSetAtom } from "jotai";
+import { communityState } from "@/atoms/community";
+import About from "@/components/Community/About";
 
 type CommunityPageProps = {
   communityData: Community;
 };
 
 const CommunityPage: NextPage<CommunityPageProps> = ({ communityData }) => {
+  const setCommunityStateValue = useSetAtom(communityState);
+  useEffect(() => {
+    setCommunityStateValue((prev) => ({
+      ...prev,
+      currentCommunity: communityData,
+    }));
+  }, []);
+
   if (!communityData) {
     return <NotFound />;
   }
@@ -31,7 +43,7 @@ const CommunityPage: NextPage<CommunityPageProps> = ({ communityData }) => {
           <Posts communtiy={communityData} />
         </Fragment>
         <Fragment>
-          <div>Right Container</div>
+          <About community={communityData} />
         </Fragment>
       </PageLayout>
     </Fragment>

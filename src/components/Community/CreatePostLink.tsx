@@ -23,7 +23,7 @@ const CreatePostLink: React.FC = () => {
   }
 
   return (
-    <div className="flex justify-evenly items-center bg-white h-14 border-[1px] border-gray-400 p-2 mb-4 cursor-pointer">
+    <div className="flex justify-evenly items-center mt-6 bg-white h-14 border-[1px] border-gray-400 p-2 mb-4 cursor-pointer">
       <CreatePostLinkIcons.reddit fontSize={36} className="text-gray-400" />
       <input
         type="text"

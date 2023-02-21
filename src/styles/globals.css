@@ -7,3 +7,7 @@
     @apply rounded-md bg-black hover:bg-slate-300 hover:text-black px-4 py-2 text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 transition-all duration-300
   }
 }
+
+body {
+  background-color: #dee4ee;
+}

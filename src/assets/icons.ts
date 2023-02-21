@@ -35,6 +35,10 @@ import {
   IoBookOutline,
 } from "react-icons/io5";
 
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
+
+export const dots = HiOutlineDotsHorizontal;
+
 export const PostIcons = {
   upvote: IoArrowUpCircleSharp,
   upvoted: IoArrowUpCircleOutline,
