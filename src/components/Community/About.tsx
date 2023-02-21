@@ -1,15 +1,20 @@
 import { Community } from "@/atoms/community";
 import React from "react";
 
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { BiCake } from "react-icons/bi";
+import { auth } from "@/firebase/app";
 import moment from "moment";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { BiCake } from "react-icons/bi";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import UpdateCommunityImage from "./UpdateCommunityImage";
 
 type AboutProps = {
   community: Community;
 };
 
 const About: React.FC<AboutProps> = ({ community }) => {
+  const [user] = useAuthState(auth);
+
   return (
     <div className="sticky top-[14px] mt-6">
       <div className="flex justify-between items-center bg-blue-400 text-white p-3 rounded-t">
@@ -42,6 +47,9 @@ const About: React.FC<AboutProps> = ({ community }) => {
           </div>
           {/* <button className="button w-full">Create Post</button> */}
         </div>
+        {community.creatorId === user?.uid && (
+          <UpdateCommunityImage community={community} />
+        )}
       </div>
     </div>
   );

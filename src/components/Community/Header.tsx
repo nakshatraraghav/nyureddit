@@ -30,6 +30,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
               src={communityData.imageUrl}
               height={64}
               width={64}
+              className="w-24 h-24 rounded-full relative -top-[14px] border-4 border-white"
               alt="Community Image"
             />
           ) : (
