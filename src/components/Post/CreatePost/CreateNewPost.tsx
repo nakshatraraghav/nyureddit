@@ -83,7 +83,7 @@ const CreateNewPost: React.FC<CreateNewPostProps> = ({ user }) => {
         const downloadURL = await getDownloadURL(imageRef);
 
         await updateDoc(createdPost, {
-          downloadURL: downloadURL,
+          imageURL: downloadURL,
         });
       }
       setLoading(false);

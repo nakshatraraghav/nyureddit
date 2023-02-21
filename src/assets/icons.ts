@@ -23,6 +23,29 @@ import { IoDocumentText } from "react-icons/io5";
 
 import { RxCrossCircled } from "react-icons/rx";
 
+import { AiOutlineDelete } from "react-icons/ai";
+import { BsChat, BsDot } from "react-icons/bs";
+// import { FaReddit } from "react-icons/fa";
+import {
+  IoArrowDownCircleOutline,
+  IoArrowDownCircleSharp,
+  IoArrowRedoOutline,
+  IoArrowUpCircleOutline,
+  IoArrowUpCircleSharp,
+  IoBookOutline,
+} from "react-icons/io5";
+
+export const PostIcons = {
+  upvote: IoArrowUpCircleSharp,
+  upvoted: IoArrowUpCircleOutline,
+  downvote: IoArrowDownCircleSharp,
+  downvoted: IoArrowDownCircleOutline,
+  chat: BsChat,
+  share: IoArrowRedoOutline,
+  save: IoBookOutline,
+  delete: AiOutlineDelete,
+};
+
 export const Remove = RxCrossCircled;
 
 export const CreatePostFormIcons = {

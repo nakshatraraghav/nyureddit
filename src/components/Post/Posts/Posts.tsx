@@ -1,7 +1,12 @@
 import { Community } from "@/atoms/community";
-import { firestore } from "@/firebase/app";
+import { auth, firestore } from "@/firebase/app";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+
+import usePosts from "@/hooks/usePosts";
+import { Post } from "@/atoms/posts";
+import PostItem from "./PostItem";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type PostsProps = {
   communtiy: Community;
@@ -10,8 +15,18 @@ type PostsProps = {
 const Posts: React.FC<PostsProps> = ({ communtiy }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [user] = useAuthState(auth);
+  const {
+    postsStateValue,
+    setPostsStateValue,
+    onDeletePost,
+    onVote,
+    onSelectPost,
+  } = usePosts();
+
   useEffect(() => {
     async function getAllPosts() {
+      setLoading(true);
       try {
         const postsCollectionRef = collection(firestore, "posts");
         const postsQuery = query(
@@ -24,17 +39,35 @@ const Posts: React.FC<PostsProps> = ({ communtiy }) => {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log(posts);
+        setPostsStateValue((prev) => ({
+          ...prev,
+          posts: posts as Post[],
+        }));
       } catch (err: any) {
         setError(err.message);
         console.log(err);
       }
+      setLoading(false);
     }
 
     getAllPosts();
   }, []);
 
-  return <div>loda lele</div>;
+  return (
+    <div className="flex flex-col">
+      {postsStateValue.posts.map((post) => (
+        <PostItem
+          key={post.title}
+          post={post}
+          onDeletePost={onDeletePost}
+          onVote={onVote}
+          onSelectPost={onSelectPost}
+          userVoteValue={undefined}
+          userIsCreator={user?.uid === post.creatorId}
+        />
+      ))}
+    </div>
+  );
 };
 
 export default Posts;
