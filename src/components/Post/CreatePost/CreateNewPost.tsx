@@ -73,12 +73,7 @@ const CreateNewPost: React.FC<CreateNewPostProps> = ({ user }) => {
       const createdPost = await addDoc(collectionRef, newPost);
 
       if (selectedImage) {
-        const imageRef = ref(
-          storage,
-          `${communityId}/${createdPost.id}/images/${Math.floor(
-            Math.random() * 1000000
-          )}`
-        );
+        const imageRef = ref(storage, `${communityId}/${createdPost.id}/image`);
         await uploadString(imageRef, selectedImage, "data_url");
         const downloadURL = await getDownloadURL(imageRef);
 

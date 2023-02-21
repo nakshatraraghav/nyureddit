@@ -1,5 +1,5 @@
 import { Post } from "@/atoms/posts";
-import React from "react";
+import React, { useState } from "react";
 
 import { PostIcons } from "@/assets/icons";
 
@@ -11,7 +11,7 @@ type PostItemProps = {
   userIsCreator: boolean; // we will use this to conditionally show the delete post button
   userVoteValue?: number;
   onVote: () => void;
-  onDeletePost: () => void;
+  onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost: () => void;
 };
 
@@ -23,6 +23,21 @@ const PostItem: React.FC<PostItemProps> = ({
   onDeletePost,
   onSelectPost,
 }) => {
+  const [error, setError] = useState<string>("");
+  const handleDeletePost = async () => {
+    try {
+      console.log("delete button clicked");
+      const success = await onDeletePost(post);
+      if (!success) {
+        throw Error("failed to delete this post");
+      }
+
+      console.log("post deletd");
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
   return (
     <div
       className="flex bg-white border-2 border-gray-400 rounded hover:border-gray-500 cursor-pointer"
@@ -92,7 +107,7 @@ const PostItem: React.FC<PostItemProps> = ({
           {userIsCreator ? (
             <div
               className="flex items-center px-2 py-2 rounded hover:bg-gray-200 space-x-2 justify-between transition-all duration-300"
-              onClick={onDeletePost}
+              onClick={handleDeletePost}
             >
               <PostIcons.delete />
               <div>Delete</div>
