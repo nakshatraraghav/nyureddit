@@ -1,19 +1,29 @@
 import { Post, postsState, PostVote } from "@/atoms/posts";
 import { auth, firestore, storage } from "@/firebase/app";
-import { collection, deleteDoc, doc, writeBatch } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+  writeBatch,
+} from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { authModalState } from "@/atoms/authModal";
 import { useSetAtom } from "jotai";
+import { useEffect } from "react";
+import { communityState } from "@/atoms/community";
 
 const usePosts = () => {
   const [postsStateValue, setPostsStateValue] = useAtom(postsState);
   const setAuthModalState = useSetAtom(authModalState);
+  const { currentCommunity } = useAtomValue(communityState);
   const [user] = useAuthState(auth);
-
   async function onVote(post: Post, vote: number, communityId: string) {
     // User should not be able to vote if they are not logged in
     // this will pop up and ask the user to login to proceed
@@ -163,6 +173,29 @@ const usePosts = () => {
       return false;
     }
   }
+
+  const getCommunityPostVotes = async (communityId: string) => {
+    const postVotesQuery = query(
+      collection(firestore, `users/${user?.uid}/postVotes`),
+      where("communtiyId", "==", communityId)
+    );
+    const postVoteDocs = await getDocs(postVotesQuery);
+    const postVotes = postVoteDocs.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setPostsStateValue((prev) => ({
+      ...prev,
+      postVotes: postVotes as PostVote[],
+    }));
+    console.log(postVotes);
+  };
+
+  useEffect(() => {
+    if (!user?.uid || !currentCommunity) return;
+    getCommunityPostVotes(currentCommunity.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, currentCommunity]);
 
   return {
     postsStateValue,
