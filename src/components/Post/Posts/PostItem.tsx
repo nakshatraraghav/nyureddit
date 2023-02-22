@@ -15,7 +15,7 @@ type PostItemProps = {
   userVoteValue?: number;
   onVote: (post: Post, vote: number, communityId: string) => Promise<void>;
   onDeletePost: (post: Post) => Promise<boolean>;
-  onSelectPost: () => void;
+  onSelectPost?: (post: Post) => void;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -28,6 +28,10 @@ const PostItem: React.FC<PostItemProps> = ({
 }) => {
   const [error, setError] = useState<string>("");
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+
+  const onSinglePostPage = !onSelectPost;
+  // this onSelectPost will not be passed to this component when in singlePostPage mode
+
   const handleDeletePost = async () => {
     setDeleteLoading(true);
     try {
@@ -45,12 +49,17 @@ const PostItem: React.FC<PostItemProps> = ({
 
   return (
     <div
-      className="flex bg-white border-2 border-gray-400 rounded hover:border-gray-500 cursor-pointer"
-      onClick={onSelectPost}
+      className={`flex bg-white  border-gray-400 rounded hover:border-gray-500 ${
+        !onSinglePostPage ? "cursor-pointer border-2" : "mt-6"
+      }`}
     >
-      <div className="flex flex-col items-center bg-gray-100 p-2 w-[40px] rounded space-y-2">
+      <div
+        className={`flex flex-col items-center p-2 w-[40px] rounded space-y-2 ${
+          onSinglePostPage ? "bg-white" : "bg-gray-100"
+        }`}
+      >
         <div
-          className={`mt-2 ${
+          className={`mt-2 cursor-pointer ${
             userVoteValue === 1 ? "text-red-500" : "text-gray-400"
           }`}
           onClick={() => {
@@ -65,7 +74,7 @@ const PostItem: React.FC<PostItemProps> = ({
         </div>
         <div>{post.voteStatus}</div>
         <div
-          className={`${
+          className={`cursor-pointer ${
             userVoteValue === -1 ? "text-red-500" : "text-gray-400"
           }`}
           onClick={() => {
@@ -79,7 +88,12 @@ const PostItem: React.FC<PostItemProps> = ({
           )}
         </div>
       </div>
-      <div className="flex flex-col w-full">
+      <div
+        className="flex flex-col w-full"
+        onClick={() => {
+          onSelectPost && onSelectPost(post);
+        }}
+      >
         <div className="flex flex-col space-y-2 p-3">
           <div className="flex space-x-2 text-xs">
             {/* check if we are on home page, if we are then show the communnity image */}

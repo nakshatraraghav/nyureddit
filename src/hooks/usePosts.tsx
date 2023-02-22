@@ -18,12 +18,16 @@ import { authModalState } from "@/atoms/authModal";
 import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { communityState } from "@/atoms/community";
+import { useRouter } from "next/router";
 
 const usePosts = () => {
   const [postsStateValue, setPostsStateValue] = useAtom(postsState);
   const setAuthModalState = useSetAtom(authModalState);
   const { currentCommunity } = useAtomValue(communityState);
   const [user] = useAuthState(auth);
+
+  const router = useRouter();
+
   async function onVote(post: Post, vote: number, communityId: string) {
     // User should not be able to vote if they are not logged in
     // this will pop up and ask the user to login to proceed
@@ -129,6 +133,15 @@ const usePosts = () => {
 
       setPostsStateValue(updatedState);
 
+      // check if this function is being called from a single post page or the community page
+
+      if (postsStateValue.selectedPost) {
+        setPostsStateValue((prev) => ({
+          ...prev,
+          selectedPost: updatedPost,
+        }));
+      }
+
       const postRef = doc(firestore, "posts", post.id);
       batch.update(postRef, {
         voteStatus: voteStatus + voteChange,
@@ -144,7 +157,14 @@ const usePosts = () => {
     }
   }
 
-  function onSelectPost() {}
+  function onSelectPost(post: Post) {
+    setPostsStateValue((prev) => ({
+      ...prev,
+      selectedPost: post,
+    }));
+
+    router.push(`${post.communityId}/comments/${post.id}`);
+  }
 
   async function onDeletePost(post: Post) {
     // Step 1: Check if the post to be deleted has a image
