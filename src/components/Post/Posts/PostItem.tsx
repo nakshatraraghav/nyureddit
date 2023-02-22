@@ -13,7 +13,7 @@ type PostItemProps = {
   post: Post;
   userIsCreator: boolean; // we will use this to conditionally show the delete post button
   userVoteValue?: number;
-  onVote: () => void;
+  onVote: (post: Post, vote: number, communityId: string) => Promise<void>;
   onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost: () => void;
 };
@@ -53,6 +53,9 @@ const PostItem: React.FC<PostItemProps> = ({
           className={`mt-2 ${
             userVoteValue === 1 ? "text-red-500" : "text-gray-400"
           }`}
+          onClick={() => {
+            onVote(post, 1, post.communityId);
+          }}
         >
           {userVoteValue === 1 ? (
             <PostIcons.upvote fontSize={22} />
@@ -65,6 +68,9 @@ const PostItem: React.FC<PostItemProps> = ({
           className={`${
             userVoteValue === -1 ? "text-red-500" : "text-gray-400"
           }`}
+          onClick={() => {
+            onVote(post, -1, post.communityId);
+          }}
         >
           {userVoteValue === -1 ? (
             <PostIcons.downvote fontSize={22} />

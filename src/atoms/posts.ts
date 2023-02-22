@@ -15,9 +15,23 @@ export type Post = {
   createdAt: Timestamp;
 };
 
+export type PostVote = {
+  id?: string;
+  postId: string;
+  communtiyId: string;
+  voteValue: number;
+};
+
 interface PostState {
   selectedPost: Post | null;
   posts: Post[];
+  postVotes: PostVote[];
 }
 
-export const postsState = atom<PostState>({ selectedPost: null, posts: [] });
+const defaultState: PostState = {
+  selectedPost: null,
+  posts: [],
+  postVotes: [],
+};
+
+export const postsState = atom<PostState>(defaultState);
